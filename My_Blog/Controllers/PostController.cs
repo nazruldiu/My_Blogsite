@@ -17,23 +17,24 @@ namespace My_Blog.Controllers
     [Authorize(Roles ="Admin")]
     public class PostController : Controller
     {
-        private readonly IRepository repository;
+        private readonly IUnitOfWork unitOfWork;
         private string _imagePath;
-        public PostController(IRepository _repository, IConfiguration config)
+        public PostController(IUnitOfWork _unitOfWork, IConfiguration config)
         {
-            repository = _repository;
+            unitOfWork = _unitOfWork;
             _imagePath = config["Path:Images"];
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var postList = repository.GetAllPost();
+            var postList = await unitOfWork.Post.GetAll();
             return View(postList);
         }
-        public IActionResult CreateEdit(int? id)
+        public async Task<IActionResult> CreateEdit(int? id)
         {
             if(id != null && id > 0)
             {
-                var model = repository.GetPost(id??0);
+                var model = await unitOfWork.Post.GetById(id??0);
+
                 var post = new PostViewModel {
                     Id = model.Id,
                     CategoryId = model.CategoryId,
@@ -57,7 +58,7 @@ namespace My_Blog.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateEdit(PostViewModel model)
+        public async Task<IActionResult> CreateEdit(PostViewModel model)
         {
             var imagePath = "";
             if(model.Image != null)
@@ -76,26 +77,26 @@ namespace My_Blog.Controllers
             };
             if (model.Id > 0)
             {
-                repository.UpdatePost(post);
+               unitOfWork.Post.Update(post);
             }
             else
             {
-                repository.AddPost(post);
+                await unitOfWork.Post.Add(post);
             }
-            repository.SaveChngesAsync();
+            await unitOfWork.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            repository.DeletePost(id);
-            repository.SaveChngesAsync();
+            await unitOfWork.Post.Delete(id);
+            await unitOfWork.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         public void DropdownList(PostViewModel postViewModel)
         {
-            var categoryList = repository.GetAllCategory();
+            var categoryList = unitOfWork.Category.GetAll().Result;
             var list = new List<SelectListItem>();
             foreach (var item in categoryList)
             {

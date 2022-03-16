@@ -13,14 +13,14 @@ namespace My_Blog.Controllers
     [Authorize(Roles ="Admin ")]
     public class CategoryController : Controller
     {
-        private readonly IRepository repository;
-        public CategoryController(IRepository _repository)
+        private readonly IUnitOfWork unitOfWork;
+        public CategoryController(IUnitOfWork _unitOfWork)
         {
-            repository = _repository;
+            unitOfWork = _unitOfWork;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categoryList = repository.GetAllCategory();
+            var categoryList = await unitOfWork.Category.GetAll();
             return View(categoryList);
         }
 
@@ -32,15 +32,15 @@ namespace My_Blog.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateEdit(CategoryViewModel model)
+        public async Task<IActionResult> CreateEdit(CategoryViewModel model)
         {
             var category = new Category
             {
                 Id = model.Id,
                 CategoryName = model.CategoryName
             };
-            repository.AddCategory(category);
-            repository.SaveChngesAsync();
+            await unitOfWork.Category.Add(category);
+            await unitOfWork.SaveChangesAsync();
             return RedirectToAction("Index");
         }
     }

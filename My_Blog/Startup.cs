@@ -46,7 +46,7 @@ namespace My_Blog
                 options.AccessDeniedPath = "/User/Login";
             });
 
-            services.AddTransient<IRepository, Repository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }
 

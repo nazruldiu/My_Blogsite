@@ -6,19 +6,13 @@ using System.Threading.Tasks;
 
 namespace My_Blog.Data.Repository
 {
-    public interface IRepository
+    public interface IRepository<T> where T: class
     {
-        Post GetPost(int Id);
-        List<Post> GetAllPost();
-        void AddPost(Post post);
-        void DeletePost(int Id);
-        void UpdatePost(Post post);
-
-        List<Category> GetAllCategory();
-        void AddCategory(Category category);
-        void DeleteCategory(int Id);
-        void UpdateCategory(Category category);
-
-        Task<bool> SaveChngesAsync();
+        Task<T> GetById(int Id);
+        Task<IEnumerable<T>> GetAll();
+        Task<bool> Add(T entity);
+        Task<bool> Delete(int Id);
+        bool Update(T entity);
+        //Task<bool> SaveChngesAsync();
     }
 }

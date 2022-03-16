@@ -7,65 +7,54 @@ using System.Threading.Tasks;
 
 namespace My_Blog.Data.Repository
 {
-    public class Repository : IRepository
+    public class Repository<T> : IRepository<T> where T:class
     {
         private AppDBContext _appDB;
+        internal DbSet<T> _dbSet;
 
         public Repository(AppDBContext appDB)
         {
             _appDB = appDB;
-        }
-        public void AddPost(Post post)
-        {
-            _appDB.Post.Add(post);
-        }
-        public void DeletePost(int Id)
-        {
-            _appDB.Post.Remove(GetPost(Id));
+            _dbSet = _appDB.Set<T>();
         }
 
-        public List<Post> GetAllPost()
+        public async Task<T> GetById(int Id)
         {
-            return _appDB.Post.Include(m => m.Category).ToList();
+           return await _dbSet.FindAsync(Id);
         }
 
-        public Post GetPost(int Id)
+        public async Task<bool> Add(T entity)
         {
-            return _appDB.Post.FirstOrDefault(x=>x.Id == Id);
+            await _dbSet.AddAsync(entity);
+            return true;
         }
 
-        public void UpdatePost(Post post)
+        public async Task<bool> Delete(int Id)
         {
-            _appDB.Post.Update(post);
+            var entity = await _dbSet.FindAsync(Id);
+            _dbSet.Remove(entity);
+            return true;
         }
 
-        public async Task<bool> SaveChngesAsync()
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
-            if (await _appDB.SaveChangesAsync() > 0)
-            {
-                return true;
-            }
-            return false;
+            return await _dbSet.ToListAsync();
         }
 
-        public List<Category> GetAllCategory()
+        public bool Update(T entity)
         {
-            return _appDB.Category.ToList();
+            _dbSet.Update(entity);
+            return true;
         }
 
-        public void AddCategory(Category category)
-        {
-            _appDB.Category.Add(category);
-        }
+        //public async Task<bool> SaveChngesAsync()
+        //{
+        //    if (await _appDB.SaveChangesAsync() > 0)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
-        public void DeleteCategory(int Id)
-        {
-            _appDB.Category.Remove(_appDB.Category.FirstOrDefault(x=>x.Id == Id));
-        }
-
-        public void UpdateCategory(Category category)
-        {
-            _appDB.Category.Update(category);
-        }
     }
 }

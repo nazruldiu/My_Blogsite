@@ -10,20 +10,20 @@ namespace My_Blog.Controllers
 {
     public class HomeController : Controller
     {
-        private IRepository _repository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public HomeController(IRepository repository)
+        public HomeController(IUnitOfWork _unitOfWork)
         {
-            _repository = repository;
+            unitOfWork = _unitOfWork;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var post = _repository.GetAllPost();
+            var post = await unitOfWork.Post.GetAll();
             return View(post);
         }
-        public IActionResult Post(int id)
+        public async Task<IActionResult> Post(int id)
         {
-            var model = _repository.GetPost(id);
+            var model = await unitOfWork.Post.GetById(id);
             var post = new PostViewModel
             {
                 Id = model.Id,
