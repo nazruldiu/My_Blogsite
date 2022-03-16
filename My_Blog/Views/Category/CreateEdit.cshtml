@@ -1,0 +1,16 @@
+﻿@model CategoryViewModel 
+
+@{ 
+
+}
+<h3>Category</h3>
+<form asp-controller="Category" asp-action="CreateEdit" method="post">
+    <div class="mb-3">
+        <label class="form-label">Category Name</label>
+        <input class="form-control" type="text" asp-for="CategoryName" />
+
+    </div>
+    <div>
+        <input class="btn btn-sm btn-success" type="submit" value="Save" />
+    </div>
+</form>

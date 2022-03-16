@@ -1,0 +1,54 @@
+﻿@model PostViewModel
+
+<h2>Create Post!</h2>
+<style>
+    .ck-editor__editable {
+     min-height: 400px;
+    }
+</style>
+<form asp-controller="post" asp-action="CreateEdit" method="post" enctype="multipart/form-data">
+
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        @Html.DropDownListFor(m => m.CategoryId, Model.CategoryList, "Select One", new { @class = "form-select" })
+    </div>
+    <div>
+        <label class="form-label">Title</label>
+        <input class="form-control" type="text" asp-for="Title" />
+    </div>
+    <div>
+        <label class="form-label">Feature Image</label>
+        <input class="form-control" type="file" asp-for="Image" />
+    </div>
+    <div>
+        <label class="form-label">Description</label>
+        <input class="form-control" type="text" asp-for="Description" />
+    </div>
+    <div>
+        <label class="form-label">Body</label>
+        @*@Html.TextAreaFor(m => m.Body, new { @class = "form-control", @id = "editor" })*@
+        <textarea class="form-control" id="editor" asp-for="Body" rows="12"></textarea>
+    </div>
+    <div>
+        <label class="form-label">Tags</label>
+        <input class="form-control" type="text" asp-for="Tags" />
+    </div>
+    <br />
+    <div class="col-md-6">
+        <input class="btn btn-success" type="submit" value="Save" />
+    </div>
+    <div>
+        <input type="hidden" asp-for="Id" />
+    </div>
+
+</form>
+@section scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/32.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}

@@ -1,0 +1,16 @@
+﻿@model LoginViewModel
+
+<h2>SignIn!</h2>
+<form method="post" asp-controller="User" asp-action="Login">
+    <div>
+        <label class="form-label">Username</label>
+        <input class="form-control"  type="text" asp-for="UserName" />
+    </div>
+    <div>
+        <label class="form-label">Password</label>
+        <input class="form-control" type="password" asp-for="Password" />
+    </div>
+    <div>
+        <input class="btn btn-outline-success" type="submit" value="Sign-In" /> 
+    </div>
+</form>

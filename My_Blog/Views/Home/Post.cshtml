@@ -1,0 +1,43 @@
+﻿@model PostViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9 col-12">
+            <img src="~/content/images/@Model.ImagePath" class="img-fluid" alt="...">
+            <div class="align-content-xl-center">
+                <h3 class="display-4">@Model.Title</h3>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">@Model.CreatedDate.ToShortDateString()</a></li>
+                    <li class="breadcrumb-item"><a href="#">Author</a></li>
+                    <li class="breadcrumb-item"><a href="#">IT</a></li>
+                </ol>
+            </nav>
+            @Html.Raw(@Model.Body)
+        </div>
+        <div class="col-md-3 col-12">
+            <h3 class="">Category</h3>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="#">
+                        It
+                        <span class="">14</span>
+                    </a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="#">
+                        Sports
+                        <span class="">2</span>
+                    </a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="#">
+                        Others
+                        <span class="">2</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

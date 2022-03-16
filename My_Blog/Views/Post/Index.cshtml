@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Post>
+<h2>Post Page!</h2>
+<div>
+    <a class="btn btn-secondary" asp-action="CreateEdit" asp-controller="Post">New Post</a>
+</div>
+<br />
+<div>
+    <table class="table table-success table-striped">
+        <thead>
+            <tr>
+                <td>Category</td>
+                <td>Title</td>
+                <td>Create Date</td>
+                <td>Status</td>
+                <td>View</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Category.CategoryName</td>
+                    <td>@item.Title</td>
+                    <td>@item.CreatedDate.ToShortDateString()</td>
+                    <td>Draft</td>
+                    <td>View</td>
+                    <td>
+                        <a asp-controller="Post" asp-action="CreateEdit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-controller="Post" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

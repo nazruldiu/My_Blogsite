@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Post>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model)
+    {
+    <div class="col">
+        <div class="card-header">
+            <a class="text-decoration-none" href="#">IT</a>
+        </div>
+        <div class="card">
+            <a class="text-decoration-none" asp-controller="Home" asp-action="Post" asp-route-id="@item.Id">
+                <img src="~/content/images/@item.Image" width="100%" height="225px" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                </div>
+            </a>
+            <div class="card-footer">
+                <div class="float-start">
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">@item.CreatedDate.ToShortDateString()</a></li>
+                            <li class="breadcrumb-item"><a href="#">Author</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="float-end">
+                    <p class="card-text"><small class="text-muted text-end">3 Comments</small></p>
+                </div>             
+            </div>
+        </div>
+    </div>
+    }
+</div>

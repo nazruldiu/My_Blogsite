@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Category> 
+
+<h3>Category</h3>
+<div>
+    <a class="btn btn-success" asp-controller="Category" asp-action="CreateEdit">New Category</a>
+    <br />
+    <div>
+        <table class="table table-success table-striped">
+            <thead>
+                <tr>
+                    <td>Category Name</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CategoryName</td>
+                        <td>Edit</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
